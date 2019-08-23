@@ -324,7 +324,7 @@ kbd {
   border: 1px solid #ccc;
   border-radius: 0.2em;
   box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1);
-  background-color: #f9f9f9;
+  background-color: #ef9ad5;
   font-family: inherit;
   background-image: linear-gradient(top, #eee, #fff, #eee);
   padding: 0.1em 0.3em;
@@ -1777,7 +1777,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fff;
+  background: #1647ff;
 }
 .feed-link,
 .chat {
@@ -2394,7 +2394,7 @@ ul.breadcrumb li+li:last-child {
   overflow: hidden;
   padding: 0;
   width: 240px;
-  background: #fff;
+  background: None;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
   border-radius: initial;
 }
@@ -2428,7 +2428,7 @@ ul.breadcrumb li+li:last-child {
   box-sizing: border-box;
   padding: 40px;
   width: calc(100% - 252px);
-  background: #fff;
+  background: None;
   min-height: 700px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.06), 0 1px 5px 0 rgba(0,0,0,0.12);
   border-radius: initial;
@@ -2970,9 +2970,18 @@ ul.breadcrumb li+li:last-child {
   }
 }
 body {
-  background: url("/images/bg2.jpg");
+  background: url("/images/tree.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: 40% 40%;
+}
+.main-inner {
+  background: None;
+  opacity: 0.8;
+}
+改变菜单栏透明度,
+.header-inner {
+  background: #fff;
+  opacity: 0.7;
 }
