@@ -4,6 +4,10 @@
     <title><![CDATA[从一道web题目看RPO漏洞]]></title>
     <url>%2F2019%2F08%2F26%2F%E4%BB%8E%E4%B8%80%E9%81%93web%E9%A2%98%E7%9B%AE%E7%9C%8BRPO%E6%BC%8F%E6%B4%9E%2F</url>
     <content type="text"><![CDATA[RPO的全称为Relative Path Overwrite,也就是相对路径覆盖，利用客户端和服务端的差异，通过相对路径来引入我们想要的js或者css文件，从而实现某种攻击。 就目前来看此攻击方法依赖于浏览器和网络服务器的反应，基于服务器的Web缓存技术和配置差异，以及服务器和客户端浏览器的解析差异，利用前端代码中加载的css/js的相对路径来加载其他文件，最终浏览器将服务器返回的不是css/js的文件当做css/js来解析，从而导致XSS，信息泄露等漏洞产生。 利用条件 ①Apache 配置错误导致AllowEncodedSlashes这个选项开启（对Apache来说默认情况下 AllowEncodedSlashes 这个选项是关闭的），或者nginx服务器。 ②存在相对路径的js或者css的引用 这里使用WSL+apache2/nginx+php进行测试 第一个条件当我们访问http://127.0.0.1/RPO%2findex.php时，不同服务器有如下表现Nginxnginx服务器可以正常访问 Apache2apache2默认配置无法访问 第二个条件存在相对路径的引用，如下 结合条件产生RPO漏洞简单复现现在情况是这样的，我们在RPO目录下有这样的一个index.php文件 123456&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;script src="test.js"&gt;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt; 以及一个test.js文件如下 1alert("this is under RPO"); 同时RPO文件夹下还有一个文件夹xxx,该文件夹下存在test.js如下 1alert("this is under xxx"); 当我们访问http://127.0.0.1/RPO/index.php时，自然而然弹出了RPO文件夹下的test.js 而我们访问http://127.0.0.1/RPO/xxx/index.php,很显然xxx文件夹下是没有index.php这个文件的 但是当我们访问http://127.0.0.1/RPO/xxx/..%2findex.php时却出现了 RPO文件夹下的index.php竟然读取了xxx文件夹下的test.js！！！ 攻击过程 我们向服务器请求URL：http://127.0.0.1/RPO/xxx/..%2findex.php 服务器见多识广，看到的是：http://127.0.0.1/RPO/xxx/../index.php也就是返回了http://127.0.0.1/RPO/index.php 浏览器比较呆萌，看到的是:http://127.0.0.1/RPO/xxx/..%2findex.php这里浏览器认为..%2findex.php是一个文件，并且执行了这个文件里面的&lt;script&gt;,想要读取当前同目录下的test.js。而浏览器认为的路径是http://127.0.0.1/RPO/xxx/,因此我们成功读取到了xxx文件夹下test.js并当作js解析。 2019强网杯中的RPO====》 未完待续。。。]]></content>
+      <categories>
+        <category>CTF</category>
+        <category>2019强网杯</category>
+      </categories>
       <tags>
         <tag>CTF</tag>
         <tag>RPO漏洞</tag>
